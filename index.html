@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisters Cafe - Digital Menu & Rewards</title>
+    <style>
+        :root {
+            --primary: #d81b60; /* Warm cafe pink/magenta hue */
+            --whatsapp: #25D366;
+            --bg: #faf7f5;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --gold: #ffb300;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 110px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cafe-logo {
+            max-width: 80px;
+            height: auto;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin-bottom: 8px;
+            object-fit: cover;
+        }
+
+        header h1 { margin: 0; font-size: 1.8em; letter-spacing: 0.5px; }
+
+        .table-badge {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 15px auto;
+            padding: 0 15px;
+        }
+
+        /* Phone Login Banner */
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .login-card h3 { margin: 0 0 8px 0; font-size: 1.05em; color: var(--primary); }
+        .login-card p { margin: 0 0 12px 0; font-size: 0.85em; color: #666; }
+
+        .login-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .login-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+
+        .login-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Loyalty Card Display */
+        .loyalty-card {
+            background: linear-gradient(135deg, #2c3e50, #000000);
+            color: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .loyalty-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .loyalty-phone {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.2);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0 5px 0;
+        }
+
+        .progress-bar-fill {
+            background: var(--gold);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .reward-tag {
+            font-size: 0.8em;
+            color: #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .discount-unlocked {
+            background: rgba(37, 211, 102, 0.2);
+            border: 1px solid var(--whatsapp);
+            color: #a5d6a7;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .claim-points-btn {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 12px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .category-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .menu-grid { display: grid; gap: 12px; }
+
+        .menu-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .item-info h3 { margin: 0 0 4px 0; font-size: 1.05em; }
+        .item-info p { margin: 0; color: #666; font-size: 0.85em; }
+        .price { font-weight: bold; color: var(--primary); margin-top: 6px; }
+
+        .add-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Cart Footer */
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            z-index: 99;
+        }
+
+        .view-cart-btn {
+            background-color: var(--whatsapp);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 480px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-header h2 { margin: 0; font-size: 1.3em; color: var(--primary); }
+        .close-btn { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #888; }
+
+        .cart-list { overflow-y: auto; flex-grow: 1; margin-bottom: 15px; }
+
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.95em;
+        }
+
+        .modal-footer { border-top: 1px solid #eee; padding-top: 15px; }
+
+        .send-wa-btn {
+            width: 100%;
+            background-color: var(--whatsapp);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-top: 10px;
+            width: 100%;
+            text-decoration: underline;
+        }
+
+        .pay-notice {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .pin-input {
+            width: 120px;
+            padding: 10px;
+            font-size: 1.2em;
+            text-align: center;
+            letter-spacing: 5px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="Sisters Cafe Logo" class="cafe-logo" onerror="this.src='https://via.placeholder.com/80?text=Sisters+Cafe'">
+        <h1>Sisters Cafe</h1>
+        <div class="table-badge" id="table-display">Table: Not Detected</div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Login or Loyalty Card Section -->
+        <div id="loyalty-container"></div>
+
+        <div id="menu-sections">
+            <!-- Menu items load here -->
+        </div>
+
+    </div>
+
+    <!-- Floating Cart Bar -->
+    <div class="cart-bar">
+        <div>
+            <strong>Total: $<span id="cart-total">0.00</span></strong>
+            <div style="font-size: 0.8em; color: #666;"><span id="cart-count">0</span> items selected</div>
+        </div>
+        <button class="view-cart-btn" onclick="openCartModal()">View Cart & Order</button>
+    </div>
+
+    <!-- Modal Popup: Order Review (NO PIN NEEDED HERE) -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Order Summary</h2>
+                <button class="close-btn" onclick="closeCartModal()">&times;</button>
+            </div>
+            
+            <div class="pay-notice">
+                💡 <strong>Notice:</strong> Orders are prepared after payment at the counter/table.
+            </div>
+
+            <div class="cart-list" id="cart-modal-list">
+                <!-- Cart items list will render here -->
+            </div>
+
+            <div class="modal-footer">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; margin-bottom: 15px;">
+                    <span>Total Amount:</span>
+                    <span>$<span id="modal-total">0.00</span></span>
+                </div>
+                <button class="send-wa-btn" onclick="sendWhatsAppOrder()">Send Order via WhatsApp</button>
+                <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Popup: Staff Rewards Claim (SPECIFIC REWARDS PIN) -->
+    <div class="modal-overlay" id="points-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⭐ Staff Checkout / Add Points</h2>
+                <button class="close-btn" onclick="closePointsModal()">&times;</button>
+            </div>
+            
+            <div style="text-align: center; padding: 10px 0;">
+                <p style="font-size: 0.9em; color: #555; margin: 0 0 10px 0;">
+                    Cashier/Staff: Enter the bill total to credit points to this customer's account.
+                </p>
+                
+                <label style="font-size: 0.85em; font-weight: bold;">Amount Spent Today ($):</label><br>
+                <input type="number" id="bill-amount-input" class="login-input" placeholder="e.g. 25.50" style="margin: 8px 0 15px 0; text-align: center; font-weight: bold;" /><br>
+
+                <label style="font-size: 0.85em; font-weight: bold;">🔒 Staff Rewards PIN:</label><br>
+                <input type="password" id="points-pin-input" class="pin-input" maxlength="4" placeholder="••••" />
+            </div>
+
+            <div class="modal-footer">
+                <button class="send-wa-btn" style="background-color: var(--primary);" onclick="processPointsClaim()">Add Points / Redeem Reward</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const whatsappNumber = "5016210064";
+        
+        // --- SPECIFIC REWARDS PIN ---
+        // Staff/Cashier enters this secret 4-digit code ONLY when the customer pays at checkout
+        const POINTS_CLAIM_PIN = "8888";
+
+        const menuData = [
+            {
+                category: "🥤 Drinks",
+                items: [
+                    { id: 101, name: "Iced Cappuccino", price: 6.50, description: "Rich espresso over ice with creamy milk foam." },
+                    { id: 102, name: "Fresh Lemonade", price: 4.00, description: "Freshly squeezed lemons with a hint of mint." },
+                    { id: 103, name: "Iced Caramel Latte", price: 7.00, description: "Espresso, cold milk, and rich caramel syrup." }
+                ]
+            },
+            {
+                category: "🍽️ Food",
+                items: [
+                    { id: 201, name: "Avocado Toast", price: 9.50, description: "Sourdough toast topped with poached eggs and fresh avocado." },
+                    { id: 202, name: "Club Sandwich", price: 12.00, description: "Triple-decker with chicken, bacon, lettuce, and tomato." },
+                    { id: 203, name: "Grilled Cheese", price: 8.00, description: "Melted cheddar and mozzarella on artisan bread." }
+                ]
+            },
+            {
+                category: "🥐 Pastries",
+                items: [
+                    { id: 301, name: "Butter Croissant", price: 3.50, description: "Flaky, golden baked French butter croissant." },
+                    { id: 302, name: "Chocolate Muffin", price: 4.00, description: "Rich dark chocolate muffin with chocolate chips." },
+                    { id: 303, name: "Cinnamon Roll", price: 4.50, description: "Warm cinnamon roll topped with cream cheese frosting." }
+                ]
+            }
+        ];
+
+        let cart = [];
+        let currentTable = "Unknown/Takeout";
+        let userPhone = localStorage.getItem('sisters_user_phone') || null;
+
+        // Loyalty State Helper
+        function getLoyaltyData(phone) {
+            const data = localStorage.getItem(`loyalty_${phone}`);
+            return data ? JSON.parse(data) : { totalSpent: 0, rewardsAvailable: 0 };
+        }
+
+        function saveLoyaltyData(phone, data) {
+            localStorage.setItem(`loyalty_${phone}`, JSON.stringify(data));
+        }
+
+        // 1. Detect Table Number
+        function getTableNumber() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const table = urlParams.get('table');
+            if (table) {
+                currentTable = table;
+                document.getElementById('table-display').innerText = `Table #${table}`;
+            } else {
+                document.getElementById('table-display').innerText = `Table: Takeout / Unknown`;
+            }
+        }
+
+        // 2. Render Loyalty Card or Login Form
+        function renderLoyaltyCard() {
+            const container = document.getElementById('loyalty-container');
+
+            if (!userPhone) {
+                container.innerHTML = `
+                    <div class="login-card">
+                        <h3>📱 Sisters Loyalty Club</h3>
+                        <p>Enter your phone number to track your spending and earn $10 off for every $100 spent!</p>
+                        <div class="login-form">
+                            <input type="tel" id="phone-input" class="login-input" placeholder="e.g. 6210064" />
+                            <button class="login-btn" onclick="loginUser()">Login</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const userData = getLoyaltyData(userPhone);
+                const currentProgress = userData.totalSpent % 100;
+                const progressPercent = Math.min((currentProgress / 100) * 100, 100);
+
+                container.innerHTML = `
+                    <div class="loyalty-card">
+                        <div class="loyalty-header">
+                            <span>SISTERS VIP REWARDS</span>
+                            <span style="cursor:pointer;" onclick="logoutUser()">[Logout]</span>
+                        </div>
+                        <div class="loyalty-phone">📞 +501 ${userPhone}</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${progressPercent}%;"></div>
+                        </div>
+                        <div class="reward-tag">
+                            <span>Total Spent: $${userData.totalSpent.toFixed(2)}</span>
+                            <span>Next Reward at $100</span>
+                        </div>
+                        ${userData.rewardsAvailable > 0 ? 
+                            `<div class="discount-unlocked">🎉 You have ${userData.rewardsAvailable} x ($10 OFF) Reward Unlocked!</div>` : ''}
+                        
+                        <button class="claim-points-btn" onclick="openPointsModal()">⭐ Staff: Add Points / Redeem at Checkout</button>
+                    </div>
+                `;
+            }
+        }
+
+        function loginUser() {
+            const phoneInput = document.getElementById('phone-input').value.trim();
+            if (phoneInput.length < 7) {
+                alert("Please enter a valid phone number.");
+                return;
+            }
+            userPhone = phoneInput;
+            localStorage.setItem('sisters_user_phone', userPhone);
+            renderLoyaltyCard();
+        }
+
+        function logoutUser() {
+            userPhone = null;
+            localStorage.removeItem('sisters_user_phone');
+            renderLoyaltyCard();
+        }
+
+        // 3. Render Categorized Menu
+        function renderMenu() {
+            const container = document.getElementById('menu-sections');
+            
+            container.innerHTML = menuData.map(section => `
+                <h2 class="category-title">${section.category}</h2>
+                <div class="menu-grid">
+                    ${section.items.map(item => `
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <h3>${item.name}</h3>
+                                <p>${item.description}</p>
+                                <div class="price">$${item.price.toFixed(2)}</div>
+                            </div>
+                            <button class="add-btn" onclick="addToCart(${item.id})">Add +</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function findItem(itemId) {
+            for (const section of menuData) {
+                const found = section.items.find(item => item.id === itemId);
+                if (found) return found;
+            }
+            return null;
+        }
+
+        // 4. Cart Operations
+        function addToCart(itemId) {
+            const item = findItem(itemId);
+            if (item) {
+                cart.push(item);
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').innerText = total.toFixed(2);
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        // 5. Order Modal Review (Clean & Fast Order Placement)
+        function openCartModal() {
+            if (cart.length === 0) {
+                alert("Your cart is empty! Add items from the menu first.");
+                return;
+            }
+
+            const modalList = document.getElementById('cart-modal-list');
+            const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+
+            const groupedCart = {};
+            cart.forEach(item => {
+                if (groupedCart[item.name]) {
+                    groupedCart[item.name].qty += 1;
+                    groupedCart[item.name].totalPrice += item.price;
+                } else {
+                    groupedCart[item.name] = { qty: 1, price: item.price, totalPrice: item.price };
+                }
+            });
+
+            let listHTML = "";
+            for (const [name, data] of Object.entries(groupedCart)) {
+                listHTML += `
+                    <div class="cart-item-row">
+                        <div><strong>${data.qty}x</strong> ${name}</div>
+                        <div>$${data.totalPrice.toFixed(2)}</div>
+                    </div>
+                `;
+            }
+
+            modalList.innerHTML = listHTML;
+            document.getElementById('modal-total').innerText = total;
+            document.getElementById('cart-modal').classList.add('active');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.remove('active');
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+            closeCartModal();
+        }
+
+        // 6. Direct WhatsApp Order (No PIN required here)
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) return;
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+
+            const itemCounts = {};
+            cart.forEach(item => {
+                itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+            });
+
+            let orderItemsText = "";
+            for (const [name, qty] of Object.entries(itemCounts)) {
+                orderItemsText += `• ${qty}x ${name}\n`;
+            }
+
+            const customerInfo = userPhone ? `📞 *Customer Phone:* +501 ${userPhone}\n` : `📞 *Customer:* Guest\n`;
+
+            const message = `🚨 *NEW ORDER - SISTERS CAFE* 🚨\n\n` +
+                            `📍 *Table:* #${currentTable}\n` +
+                            `${customerInfo}\n` +
+                            `🛒 *Order Details:*\n${orderItemsText}\n` +
+                            `💰 *Total Amount:* $${total}\n\n` +
+                            `Thank you!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // Reset cart
+            cart = [];
+            updateCartUI();
+            closeCartModal();
+
+            window.open(whatsappURL, '_blank');
+        }
+
+        // 7. Checkout / Add Points Modal Logic
+        function openPointsModal() {
+            document.getElementById('points-pin-input').value = '';
+            document.getElementById('bill-amount-input').value = '';
+            document.getElementById('points-modal').classList.add('active');
+        }
+
+        function closePointsModal() {
+            document.getElementById('points-modal').classList.remove('active');
+        }
+
+        function processPointsClaim() {
+            const enteredPin = document.getElementById('points-pin-input').value.trim();
+            const billAmount = parseFloat(document.getElementById('bill-amount-input').value);
+
+            if (enteredPin !== POINTS_CLAIM_PIN) {
+                alert("❌ Incorrect Staff Rewards PIN!\n\nPlease ask cashier to authorize points.");
+                return;
+            }
+
+            if (isNaN(billAmount) || billAmount <= 0) {
+                alert("Please enter a valid bill amount.");
+                return;
+            }
+
+            let userData = getLoyaltyData(userPhone);
+            const previousSpent = userData.totalSpent;
+            
+            // Check if user has reward and wants to apply it
+            let discountApplied = false;
+            if (userData.rewardsAvailable > 0 && billAmount >= 10) {
+                if (confirm(`🎉 This customer has a $10 Reward available!\n\nWould you like to apply -$10 off this bill?`)) {
+                    userData.rewardsAvailable -= 1;
+                    discountApplied = true;
+                }
+            }
+
+            const finalAmountSpent = discountApplied ? Math.max(0, billAmount - 10) : billAmount;
+            userData.totalSpent += finalAmountSpent;
+
+            // Check if milestone was hit ($100 spent)
+            const newRewardsEarned = Math.floor(userData.totalSpent / 100) - Math.floor(previousSpent / 100);
+            if (newRewardsEarned > 0) {
+                userData.rewardsAvailable += newRewardsEarned;
+            }
+
+            saveLoyaltyData(userPhone, userData);
+            renderLoyaltyCard();
+            closePointsModal();
+
+            alert(`✅ Points updated successfully!\n\nAdded: $${finalAmountSpent.toFixed(2)}\nNew Spent Balance: $${userData.totalSpent.toFixed(2)}`);
+        }
+
+        // Initialize Page
+        getTableNumber();
+        renderLoyaltyCard();
+        renderMenu();
+    </script>
+</body>
+</html>
